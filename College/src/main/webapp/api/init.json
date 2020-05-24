@@ -1,0 +1,79 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/welcome-3.html?t=1"
+  },
+  "logoInfo": {
+    "title": "上帝之杖",
+    "image": "images/pic01.jpg",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "主页",
+          "href": "page/welcome-3.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "志愿推荐",
+          "href": "page/welcome-2.html",
+          "icon": "fa fa-gears",
+          "target": "_self"
+        },
+        {
+          "title": "高校信息",
+          "href": "page/table.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        },
+        {
+          "title": "权重设置",
+          "href": "page/form-step.html",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "登录",
+          "href": "",
+          "icon": "fa fa-flag-o",
+          "target": "_self",
+          "child": [
+            {
+              "title": "登录-1",
+              "href": "page/login-1.html",
+              "icon": "fa fa-stumbleupon-circle",
+              "target": "_blank"
+            },
+            {
+              "title": "登录-2",
+              "href": "page/login-2.html",
+              "icon": "fa fa-viacoin",
+              "target": "_blank"
+            }
+          ]
+        },
+        {
+          "title": "异常页面",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "404页面",
+              "href": "page/404.html",
+              "icon": "fa fa-hourglass-end",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

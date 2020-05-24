@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 配置注解扫描器 -->
+	<context:component-scan base-package="com.ldz.college" use-default-filters="false">
+		<!-- 以下注解不处理 -->
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestBody"/>
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestParam"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+	</context:component-scan>
+	
+	<!-- 放过静态资源 -->
+	<mvc:default-servlet-handler/>
+	
+	<!-- 启用mvc注解 -->
+	<mvc:annotation-driven />
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/back/**"/>
+			<bean class="com.ldz.college.interceptor.BackForwardInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/front/**"/>
+			<bean class="com.ldz.college.interceptor.FrontForwardInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>

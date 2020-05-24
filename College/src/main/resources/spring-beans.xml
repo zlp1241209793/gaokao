@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 需要扫描的包 -->
+	<context:component-scan base-package="com.ldz.college">
+		<!-- 以下注解不处理 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestBody"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestParam"/>
+	</context:component-scan>
+	
+	<!-- 引入资源文件 -->
+	<context:property-placeholder location="classpath:db.properties" />
+	
+	<!-- 配置数据源 DataSource -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${user}" />
+		<property name="password" value="${password}" />
+		
+		<!-- 数据库连接池的配置 -->
+		<property name="initialSize" value="3" />
+	</bean>
+	
+	<!-- SqlSessionFactory对象的配置  -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据源配置 -->
+		<property name="dataSource" ref="dataSource"></property>
+		
+		<!-- 配置资源文件路径，即我们的mapper文件所在的路径  我这里是mapper目录下的所有以Mapper.xml结尾的文件 -->
+		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"></property>
+		
+		<!-- 指定需要启用别名的包路径 -->
+		<property name="typeAliasesPackage" value="com.ldz.college.entity"></property>
+	</bean>
+	
+	<!-- 配置mybatis映射文件与接口的关联，底层是采用动态代理的方式帮我们对接口做了实现。注意此时的namespace必须是对应接口的全路径
+		并且映射文件中id的值必须跟对应接口中方法名一致
+	 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 映射文件对应接口的包路径 -->
+		<property name="basePackage" value="com.ldz.college.mapper"></property>
+		
+		<!-- 注意：这个地方要用value而不是ref，因为属性要求的类型是一个字符串 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	
+	<!-- 配置spring的事务管理 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 需要事务的数据源  -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 启用事务注解 -->
+	<tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
+	
+	<!-- 文件上传的 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 编码集 -->
+		<property name="defaultEncoding" value="utf-8"></property>
+		<property name="maxUploadSize" value="1048576000"></property>
+		<property name="maxInMemorySize" value="4096"></property>
+	</bean>
+	
+	<!-- 邮件发送配置 -->
+	<bean id="sendMailUtil" class="com.ldz.college.util.SendMailUtil">
+		<!-- 发件箱 -->
+		<property name="sendEmail" value="1241209793@qq.com"></property>
+		<!-- 发件箱授权码 -->
+		<property name="pwd" value="keklrfuycqpvhbee"></property>
+	</bean>
+</beans>
