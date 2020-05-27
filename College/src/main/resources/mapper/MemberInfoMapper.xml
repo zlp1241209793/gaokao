@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 注意：namespace中的值必须是对应接口的全路径，SQL语句中的id值必须是这个接口中对应方法名称 -->
+<mapper namespace="com.ldz.college.mapper.IMemberInfoMapper">
+	<select id="login" parameterType="MemberInfo" resultType="MemberInfo">
+		select mno, nickname, tel, email from memberinfo where (nickname=#{nickName} or tel=#{nickName} or email=#{nickName}) and pwd=md5(#{pwd})
+	</select>
+	
+	<insert id="register" parameterType="MemberInfo">
+		insert into memberinfo (nickname, pwd, tel, email) values(#{nickName}, md5(#{pwd}), #{tel}, #{email})
+	</insert>
+	
+	<update id="updateInfo" parameterType="MemberInfo">
+		update memberinfo set nickName=#{nickName}, sex=#{sex}, academic=#{academic}, province=#{province}, score=#{score}, ranking=#{ranking}
+		where mno=#{mno}
+	</update>
+	
+	<select id="findAll" parameterType="string" resultType="MemberInfo">
+		select nickName, sex, academic, province, score, ranking from memberinfo where mno=#{_parameter}
+	</select>
+</mapper>

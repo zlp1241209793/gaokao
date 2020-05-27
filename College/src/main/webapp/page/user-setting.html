@@ -20,49 +20,39 @@
             <div class="layui-form-item">
                 <label class="layui-form-label required">用户名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名"  value="高考志愿" class="layui-input">
+                    <input type="text" id="username" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名"  value="高考志愿" class="layui-input">
                     <tip>填写自己账号的名称。</tip>
                 </div>
             </div>
             <div class="layui-form-item" id="area-picker">
                 <label class="layui-form-label required">地区</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <select name="province" class="province-selector" data-value="广东省" lay-filter="province-1">
+                    <select id="province" name="province" class="province-selector" data-value="" lay-filter="province-1">
                         <option value="">请选择省</option>
-                    </select>
-                </div>
-                <div class="layui-input-inline" style="width: 200px;">
-                    <select name="city" class="city-selector" data-value="深圳市" lay-filter="city-1">
-                        <option value="">请选择市</option>
-                    </select>
-                </div>
-                <div class="layui-input-inline" style="width: 200px;">
-                    <select name="county" class="county-selector" data-value="龙岗区" lay-filter="county-1">
-                        <option value="">请选择区</option>
                     </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">性别</label>
-                <input type="radio" name="sex" value="man" title="男"  checked>
-                <input type="radio" name="sex" value="woman" title="女">
+                <input type="radio" name="sex" value="man" title="男"  />
+                <input type="radio" name="sex" value="woman" title="女"  />
             </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label required">文/理科</label>
-                <input type="radio" name="choice" value="science" title="理科" checked>
-                <input type="radio" name="choice" value="poem" title="文科" >
+                <input type="radio" name="choice" value="science" title="理科"  />
+                <input type="radio" name="choice" value="poem" title="文科"  />
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">分数</label>
                 <div class="layui-input-block">
-                    <input type="text" name="score"" lay-verify="required" lay-reqtext="分数不能为空" placeholder="请输入分数"  value="472" class="layui-input">
+                    <input type="text" id="score" name="score"" lay-verify="required" lay-reqtext="分数不能为空" placeholder="请输入分数"  value="472" class="layui-input">
                     <tip>填写自己的分数。</tip>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">排名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="number""  placeholder="请输入分数"  value="20001" class="layui-input">
+                    <input type="text" id="number" name="number""  placeholder="请输入分数"  value="20001" class="layui-input">
                     <tip>填写自己的分数。</tip>
                 </div>
             </div>
@@ -75,8 +65,50 @@
         </div>
     </div>
 </div>
+<input id="loginInfo" type="hidden" />
+<input id="login_usid" type="hidden" />
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../js/myjs/checkLogin.js" charset="utf-8"></script>
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+var check = checkLogin;
+$(
+	layui.use(['form', 'miniTab'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            miniTab = layui.miniTab;
+		check(function findAll() {
+			var mno = $("#login_usid").val();
+			$.post("../memberInfo/findAll", {mno:mno}, function(data){
+				if (data != null) {
+					$("#username").val(data.nickName);
+					layui.use(['layarea'], function () {
+	                    var layarea = layui.layarea;
+	                    layarea.render({
+	                        elem: '#area-picker',
+	                        data: {
+	                            province: data.province
+	                        },
+	                        change: function (res) {
+	                            //选择结果
+	                            console.log(res);
+	                        }
+	                    });
+	                });
+	                $("input[name=sex][value='man']").attr("checked", data.sex === 'man');
+	                $("input[name=sex][value='woman']").attr("checked", data.sex === 'woman');
+	                $("input[name=choice][value='science']").attr("checked", data.academic === 'science');
+	                $("input[name=choice][value='poem']").attr("checked", data.academic === 'poem');
+					$("#score").val(data.score);
+					$("#number").val(data.ranking);
+					form.render();
+				}
+			}, "json");
+		}) // checkLogin执行完后执行这个方法
+	})
+)
+</script>
 <script>
     layui.use(['form','miniTab'], function () {
         var form = layui.form,
@@ -88,8 +120,19 @@
             var index = layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             }, function () {
-                layer.close(index);
-                miniTab.deleteCurrentByIframe();
+            	var mno =$("#login_usid").val();
+            	$.post("../memberInfo/updateInfo", {nickName:data.field.username, sex:data.field.sex, academic:data.field.choice, province:data.field.province, score:data.field.score, ranking:data.field.number, mno:mno}, function(data) {
+            		data = parseInt($.trim(data));
+            		if (data == 1) { // 修改成功
+            			layer.msg('修改个人信息成功');
+					} else {
+            			layer.msg('修改个人信息失败');
+					}
+            	}, "json");
+            	setTimeout(() => {
+	                layer.close(index);
+	                miniTab.deleteCurrentByIframe();
+				}, 1000);
             });
             return false;
         });

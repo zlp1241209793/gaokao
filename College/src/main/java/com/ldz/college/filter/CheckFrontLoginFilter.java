@@ -15,7 +15,7 @@
 //import javax.servlet.http.HttpServletResponse;
 //import javax.servlet.http.HttpSession;
 //
-//@WebFilter(filterName="CheckFrontLoginFilter",value="/front/*",initParams=@WebInitParam(name="errorPage",value="login.html"))
+//@WebFilter(filterName="CheckFrontLoginFilter",value="/page/*",initParams=@WebInitParam(name="errorPage",value="/page/login-1.html"))
 //public class CheckFrontLoginFilter implements Filter{
 //	private String path = "index.html";
 //	public void destroy() {

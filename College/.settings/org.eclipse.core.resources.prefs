@@ -1,4 +1,11 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
+encoding//src/main/java/com/ldz/college/util/VerifyCode.java=UTF-8
 encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/api/clear.json=UTF-8
+encoding//src/main/webapp/api/init.json=UTF-8
+encoding//src/main/webapp/api/menus.json=UTF-8
+encoding//src/main/webapp/api/table.json=UTF-8
+encoding//src/main/webapp/api/tableSelect.json=UTF-8
+encoding//src/main/webapp/api/upload.json=UTF-8
 encoding/<project>=UTF-8

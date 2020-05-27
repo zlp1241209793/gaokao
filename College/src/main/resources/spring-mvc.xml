@@ -31,10 +31,6 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/back/**"/>
-			<bean class="com.ldz.college.interceptor.BackForwardInterceptor"></bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
 			<mvc:mapping path="/front/**"/>
 			<bean class="com.ldz.college.interceptor.FrontForwardInterceptor"></bean>
 		</mvc:interceptor>
