@@ -25,7 +25,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -45,7 +44,6 @@ public class Lucene {
 		if (!file.exists()) { // 如果文件夹不存在
 			file.mkdirs(); // 创建文件夹
 		}
-		System.out.println(file.getAbsolutePath());
 		// 删除所有旧索引
 		for (File fl : file.listFiles()) {
 			fl.delete();

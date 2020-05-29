@@ -22,12 +22,6 @@
                             <div>
                                 <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">兴趣权重:</label>
-                                        <div class="layui-input-block">
-                                            <input type="number" id="step1_1" name="interest" placeholder="请填写兴趣权重" class="layui-input" lay-verify="number" required />
-                                        </div>
-                                    </div>
-                                    <div class="layui-form-item">
                                         <label class="layui-form-label">排名权重:</label>
                                         <div class="layui-input-block">
                                             <input type="number" id="step1_2" name="ranking" placeholder="请填写排名权重" value="" class="layui-input" lay-verify="number" required>
@@ -48,7 +42,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">备注说明:</label>
                                         <div class="layui-input-block">
-                                        	<label>注意: 4项和为100, 且不得出现相同的数值</label>
+                                        	<label>注意: 3项和为100, 且不得出现相同的数值</label>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -62,12 +56,6 @@
                             </div>
                             <div>
                                 <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label">兴趣权重:</label>
-                                        <div class="layui-input-block">
-                                            <div class="layui-form-mid layui-word-aux" id="step2_1"></div>
-                                        </div>
-                                    </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">排名权重:</label>
                                         <div class="layui-input-block">
@@ -137,7 +125,6 @@ $(
 		console.log(mno);
 		$.post("../weight/find", {mno:mno}, function(data){
 			if (data != null) {
-				$("#step1_1").val(data.interest); // 兴趣
 				$("#step1_2").val(data.ranking); // 排名
 				$("#step1_3").val(data.major); // 专业
 				$("#step1_4").val(data.location); // 地理
@@ -188,27 +175,26 @@ function viewWeight() {
 				count[i] = item;
 				++ i;
 			})
-			if (Array.from(new Set(count)).length != 4) { // 说明有相同的权值
+			if (Array.from(new Set(count)).length != 3) { // 说明有相同的权值
 				layer.msg('注意: 不得出现相同的数值');
 				return false;
 			}
 			
         	if (sum(count) != 100) {
-        		layer.msg('注意: 4项和为100');
+        		layer.msg('注意: 3项和为100');
         		return false;
 			}
         	
-        	$("#step2_1").text(count[0]);
-        	$("#step2_2").text(count[1]);
-        	$("#step2_3").text(count[2]);
-        	$("#step2_4").text(count[3]);
+        	$("#step2_2").text(count[0]);
+        	$("#step2_3").text(count[1]);
+        	$("#step2_4").text(count[2]);
             step.next('#stepForm');
             return false;
         });
 
         form.on('submit(formStep2)', function (data) {
         	mno = $("#login_usid").val();
-        	$.post("../weight/set", {mno:mno, interest:count[0], location:count[3], ranking:count[1], major:count[2]}, function(data) {
+        	$.post("../weight/set", {mno:mno, location:count[2], ranking:count[0], major:count[1]}, function(data) {
 				data = parseInt($.trim(data));
 				if (data == -1) {
 					layer.msg('修改权重失败');

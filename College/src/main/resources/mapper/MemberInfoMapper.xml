@@ -6,19 +6,27 @@
 <!-- 注意：namespace中的值必须是对应接口的全路径，SQL语句中的id值必须是这个接口中对应方法名称 -->
 <mapper namespace="com.ldz.college.mapper.IMemberInfoMapper">
 	<select id="login" parameterType="MemberInfo" resultType="MemberInfo">
-		select mno, nickname, tel, email from memberinfo where (nickname=#{nickName} or tel=#{nickName} or email=#{nickName}) and pwd=md5(#{pwd})
+		select mno, nickname, realname, sex, academic, email, major from memberinfo where (nickname=#{nickName} or email=#{nickName}) and pwd=md5(#{pwd})
 	</select>
 	
 	<insert id="register" parameterType="MemberInfo">
-		insert into memberinfo (nickname, pwd, tel, email) values(#{nickName}, md5(#{pwd}), #{tel}, #{email})
+		insert into memberinfo (nickname, pwd, email) values(#{nickName}, md5(#{pwd}), #{email})
 	</insert>
 	
 	<update id="updateInfo" parameterType="MemberInfo">
-		update memberinfo set nickName=#{nickName}, sex=#{sex}, academic=#{academic}, province=#{province}, score=#{score}, ranking=#{ranking}
+		update memberinfo set nickName=#{nickName}, sex=#{sex}, academic=#{academic}, province=#{province}, score=#{score}, ranking=#{ranking}, major=#{major}
 		where mno=#{mno}
 	</update>
 	
 	<select id="findAll" parameterType="string" resultType="MemberInfo">
-		select nickName, sex, academic, province, score, ranking from memberinfo where mno=#{_parameter}
+		select nickName, sex, academic, province, score, ranking, major from memberinfo where mno=#{_parameter}
+	</select>
+	
+	<select id="findByEmail" parameterType="string" resultType="MemberInfo">
+		select nickName, sex, academic, province, score, ranking, major from memberinfo where email=#{_parameter}
+	</select>
+	
+	<select id="findMajor" resultType="map">
+		select big_profess from big_to_small group by big_profess
 	</select>
 </mapper>

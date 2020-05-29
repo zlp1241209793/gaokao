@@ -20,23 +20,33 @@ CREATE TABLE `memberinfo` (
   `mno` int(11) NOT NULL AUTO_INCREMENT,
   `nickName` varchar(100) COLLATE utf8_bin NOT NULL, -- 用户昵称
   `realName` varchar(100) COLLATE utf8_bin DEFAULT NULL, -- 用户真实姓名
-  `pwd` varchar(100) COLLATE utf8_bin NOT NULL, -- 用户密码
+  `pwd` varchar(100) NOT NULL, -- 用户密码
   `sex` varchar(10) DEFAULT NULL, -- 用户性别
   `academic` varchar(15) COLLATE utf8_bin DEFAULT NULL, -- 文理科
   `province` varchar(10) COLLATE utf8_bin DEFAULT NULL, -- 地区
   `score` int(2) DEFAULT NULL, -- 分数
   `ranking` int(2) DEFAULT NULL, -- 排名
-  `tel` varchar(15) COLLATE utf8_bin DEFAULT NULL, -- 用户电话
+  `major` varchar(20) COLLATE utf8_bin DEFAULT NULL, -- 用户倾向专业
   `email` varchar(100) COLLATE utf8_bin DEFAULT NULL, -- 用户邮箱
   `regDate` datetime DEFAULT NULL, -- 用户注册日期
   `status` int(11) DEFAULT NULL, -- 账号状态
   PRIMARY KEY (`mno`),
   UNIQUE KEY `nickName` (`nickName`),
-  UNIQUE KEY `tel` (`tel`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1011 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 insert into memberinfo (nickName, pwd, area) values ('zlp', md5('123456'), '广东省');
+
+-- 权重表
+CREATE TABLE `weightinfo` (
+  `wid` int(11) NOT NULL AUTO_INCREMENT,
+  `mno` int(11) NOT NULL,
+  `location` int(11) DEFAULT NULL, -- 地理权重
+  `ranking` int(11) DEFAULT NULL, -- 排名权重
+  `major` int(11) DEFAULT NULL, -- 专业权重
+  PRIMARY KEY (`wid`),
+  CONSTRAINT `FK_memberinfo_mno` FOREIGN KEY (`mno`) REFERENCES `memberinfo` (`mno`)
+) ENGINE=InnoDB AUTO_INCREMENT=1011 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- 权重表
 CREATE TABLE `weight` (

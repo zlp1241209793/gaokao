@@ -16,13 +16,14 @@ public class Science_situation implements Serializable {
 	private String region; // 地区
 	private Integer batch; // 批次
 	private String province; // 省份
+	private String city; // 市区
 	
 	@Override
 	public String toString() {
-		return "Liberalarts_situation [school_id=" + school_id + ", school_code=" + school_code + ", school_name="
+		return "Science_situation [school_id=" + school_id + ", school_code=" + school_code + ", school_name="
 				+ school_name + ", plan_num=" + plan_num + ", throw_num=" + throw_num + ", score=" + score
 				+ ", displacement=" + displacement + ", year=" + year + ", region=" + region + ", batch=" + batch
-				+ ", province=" + province + "]";
+				+ ", province=" + province + ", city=" + city + "]";
 	}
 
 	public Integer getSchool_id() {
@@ -113,11 +114,20 @@ public class Science_situation implements Serializable {
 		this.province = province;
 	}
 
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((displacement == null) ? 0 : displacement.hashCode());
 		result = prime * result + ((plan_num == null) ? 0 : plan_num.hashCode());
 		result = prime * result + ((province == null) ? 0 : province.hashCode());
@@ -144,6 +154,11 @@ public class Science_situation implements Serializable {
 			if (other.batch != null)
 				return false;
 		} else if (!batch.equals(other.batch))
+			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
 			return false;
 		if (displacement == null) {
 			if (other.displacement != null)

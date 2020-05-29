@@ -80,6 +80,12 @@
 		<!-- 发件箱 -->
 		<property name="sendEmail" value="1241209793@qq.com"></property>
 		<!-- 发件箱授权码 -->
-		<property name="pwd" value="keklrfuycqpvhbee"></property>
+		<property name="pwd" value="fvaqvsyleuwkbagg"></property>
 	</bean>
+	
+	<!-- 为排名推荐学校 -->
+	<bean id="recommendForRank" class="com.ldz.college.util.RecommendForRank"></bean>
+	
+	<!-- 处理排名的各种方法 -->
+	<bean id="dealWithRank" class="com.ldz.college.util.DealWithRank"></bean>
 </beans>

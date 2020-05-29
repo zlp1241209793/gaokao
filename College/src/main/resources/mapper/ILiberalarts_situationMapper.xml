@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 注意：namespace中的值必须是对应接口的全路径，SQL语句中的id值必须是这个接口中对应方法名称 -->
+<mapper namespace="com.ldz.college.mapper.ILiberalarts_situationMapper">
+	<select id="locationRank" parameterType="map" resultType="map">
+		select * from liberalarts_situation order by displacement desc 
+		where displacement &lt;= #{maxRank} and displacement &gt;= #{minRank}
+		and province = #{location}
+	</select>
+
+	<select id="majorRank" parameterType="map" resultType="map">
+		select * from (select * from liberalarts_situation order by displacement desc 
+		where displacement &lt;= #{maxRank} and displacement &gt;= #{minRank}) l, profess_school_sort p,
+		(select small_profess from big_to_small where big_profess = #{major}) m
+		where l.school_name = p.school_name and p.profess_name=m.small_profess in m order by p.rank desc
+	</select>
+</mapper>

@@ -1,5 +1,8 @@
 package com.ldz.college.biz.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +30,7 @@ public class MemberInfoBizImpl implements IMemberInfoBiz {
 	@Override
 	@Transactional
 	public int register(MemberInfo mInfo) {
-		if (StringUtil.checkNull(mInfo.getNickName(), mInfo.getPwd())) {
+		if (StringUtil.checkNull(mInfo.getNickName(), mInfo.getPwd(), mInfo.getEmail())) {
 			return 0;
 		}
 		// 查询该账号是否已经注册
@@ -39,6 +42,7 @@ public class MemberInfoBizImpl implements IMemberInfoBiz {
 	}
 
 	@Override
+	@Transactional
 	public int updateInfo(MemberInfo mInfo) {
 		if (StringUtil.checkNull(mInfo.getNickName(), mInfo.getSex(), mInfo.getAcademic(), mInfo.getProvince(), mInfo.getScore(), mInfo.getRanking(), mInfo.getMno())) {
 			return 0;
@@ -47,11 +51,26 @@ public class MemberInfoBizImpl implements IMemberInfoBiz {
 	}
 
 	@Override
+	@Transactional
 	public MemberInfo findAll(String mno) {
 		if (StringUtil.checkNull(mno)) {
 			return null;
 		}
 		return memberInfoMapper.findAll(mno);
+	}
+
+	@Override
+	@Transactional
+	public MemberInfo findByEmail(String email) {
+		if (StringUtil.checkNull(email)) {
+			return null;
+		}
+		return memberInfoMapper.findByEmail(email);
+	}
+
+	@Override
+	public List<Map<String, Object>> findMajor() {
+		return memberInfoMapper.findMajor();
 	}
 
 }

@@ -112,11 +112,33 @@
         </div>
     </div>
 
-
+<input type="hidden" id="loginInfo"/>
+<input type="hidden" id="login_usid"/>
+<input type="hidden" id="login_academic"/>
 </div>
 <!--</div>-->
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../js/myjs/checkLogin.js" charset="utf-8"></script>
+<script type="text/javascript">
+var check = checkLogin;
+$(
+	check(function recommendForRank() {
+		var mno = $("#login_usid").val();
+		var academic = $("#login_academic").val();
+		if (academic == "science") { // 如果用户是理科
+			$.post("../science/recommendForRank", {mno:mno}, function(data) {
+				
+			}, "json");
+		} else if (academic == "poem") { // 如果用户是文科
+			$.post("../liberalarts/recommendForRank", {mno:mno}, function(data) {
+				
+			}, "json");
+		}
+	})
+)
+</script>
 <script>
     layui.use(['layer', 'echarts'], function () {
         var $ = layui.jquery,

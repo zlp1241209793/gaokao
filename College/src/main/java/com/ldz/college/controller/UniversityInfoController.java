@@ -16,7 +16,7 @@ import com.ldz.college.util.StringUtil;
 public class UniversityInfoController {
 	@Autowired 
 	private IUniversityInfoBiz universityInfoBiz;
-
+	
 	@RequestMapping("/findByPage")
 	public Map<String, Object> findByPage(Integer page, @RequestParam(value = "limit")Integer rows, String searchParams) {
 		String text = "";

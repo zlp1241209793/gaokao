@@ -31,4 +31,5 @@ public interface IUniversityInfoBiz {
 	 * @param rows 每页行数
 	 */
 	public Map<String, Object> luceneSearch(String text, Integer page, Integer rows);
+	
 }

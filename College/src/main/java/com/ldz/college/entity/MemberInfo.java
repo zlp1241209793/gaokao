@@ -15,7 +15,7 @@ public class MemberInfo implements Serializable {
 	private String province; // 地区
 	private Integer score; // 分数
 	private Integer ranking; // 排名
-	private String tel; // 用户电话
+	private String major; // 用户偏向的专业
 	private String email; // 用户邮箱
 	private String regDate; // 用户注册日期
 	private Integer status; // 帐号状态
@@ -24,7 +24,7 @@ public class MemberInfo implements Serializable {
 	public String toString() {
 		return "MemberInfo [mno=" + mno + ", nickName=" + nickName + ", realName=" + realName + ", pwd=" + pwd
 				+ ", area=" + area + ", sex=" + sex + ", academic=" + academic + ", province=" + province + ", score="
-				+ score + ", ranking=" + ranking + ", tel=" + tel + ", email=" + email + ", regDate=" + regDate
+				+ score + ", ranking=" + ranking + ", major=" + major + ", email=" + email + ", regDate=" + regDate
 				+ ", status=" + status + "]";
 	}
 
@@ -108,12 +108,12 @@ public class MemberInfo implements Serializable {
 		this.ranking = ranking;
 	}
 
-	public String getTel() {
-		return tel;
+	public String getMajor() {
+		return major;
 	}
 
-	public void setTel(String tel) {
-		this.tel = tel;
+	public void setMajor(String major) {
+		this.major = major;
 	}
 
 	public String getEmail() {
@@ -147,6 +147,7 @@ public class MemberInfo implements Serializable {
 		result = prime * result + ((academic == null) ? 0 : academic.hashCode());
 		result = prime * result + ((area == null) ? 0 : area.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((major == null) ? 0 : major.hashCode());
 		result = prime * result + ((mno == null) ? 0 : mno.hashCode());
 		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
 		result = prime * result + ((province == null) ? 0 : province.hashCode());
@@ -157,7 +158,6 @@ public class MemberInfo implements Serializable {
 		result = prime * result + ((score == null) ? 0 : score.hashCode());
 		result = prime * result + ((sex == null) ? 0 : sex.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((tel == null) ? 0 : tel.hashCode());
 		return result;
 	}
 
@@ -184,6 +184,11 @@ public class MemberInfo implements Serializable {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (major == null) {
+			if (other.major != null)
+				return false;
+		} else if (!major.equals(other.major))
 			return false;
 		if (mno == null) {
 			if (other.mno != null)
@@ -234,11 +239,6 @@ public class MemberInfo implements Serializable {
 			if (other.status != null)
 				return false;
 		} else if (!status.equals(other.status))
-			return false;
-		if (tel == null) {
-			if (other.tel != null)
-				return false;
-		} else if (!tel.equals(other.tel))
 			return false;
 		return true;
 	}

@@ -41,7 +41,6 @@ public class UniversityInfoBizImpl implements IUniversityInfoBiz{
 	@PostConstruct // 项目启动时运行一次
 	public void createIndex() {
 		List<Map<String, Object>> list = universityInfoMapper.findAll();
-		System.out.println(list.size());
 		Lucene lucene = new Lucene();
 		try {
 			lucene.createIndex(list);

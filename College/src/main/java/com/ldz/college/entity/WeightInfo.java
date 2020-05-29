@@ -7,15 +7,14 @@ public class WeightInfo implements Serializable {
 	
 	private Integer wid; 
 	private Integer mno;
-	private Integer interest; // 兴趣权重
 	private Integer location; // 地理权重
 	private Integer ranking; // 排名权重
 	private Integer major; // 专业权重
 	
 	@Override
 	public String toString() {
-		return "Weight [wid=" + wid + ", mno=" + mno + ", interest=" + interest + ", location=" + location
-				+ ", ranking=" + ranking + ", major=" + major + "]";
+		return "WeightInfo [wid=" + wid + ", mno=" + mno + ", location=" + location + ", ranking=" + ranking
+				+ ", major=" + major + "]";
 	}
 
 	public Integer getWid() {
@@ -32,14 +31,6 @@ public class WeightInfo implements Serializable {
 
 	public void setMno(Integer mno) {
 		this.mno = mno;
-	}
-
-	public Integer getInterest() {
-		return interest;
-	}
-
-	public void setInterest(Integer interest) {
-		this.interest = interest;
 	}
 
 	public Integer getLocation() {
@@ -70,7 +61,6 @@ public class WeightInfo implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((interest == null) ? 0 : interest.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((major == null) ? 0 : major.hashCode());
 		result = prime * result + ((mno == null) ? 0 : mno.hashCode());
@@ -88,11 +78,6 @@ public class WeightInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		WeightInfo other = (WeightInfo) obj;
-		if (interest == null) {
-			if (other.interest != null)
-				return false;
-		} else if (!interest.equals(other.interest))
-			return false;
 		if (location == null) {
 			if (other.location != null)
 				return false;

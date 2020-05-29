@@ -33,6 +33,14 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label required">倾向专业</label>
+                <div class="layui-input-inline" style="width: 200px;">
+                    <select id="major" name="major" class="province-selector" data-value="" lay-filter="getMajor">
+                        <option value="">请选择专业</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label required">性别</label>
                 <input type="radio" name="sex" value="man" title="男"  />
                 <input type="radio" name="sex" value="woman" title="女"  />
@@ -73,7 +81,18 @@
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
 var check = checkLogin;
+$.post("../memberInfo/findMajor", null, function(data){
+	if (data != null) {
+		var str = '';
+		$.each(data, function(index, item){
+			str += '<option value="">' + item.big_profess + '</option>';
+		})
+		
+		$("#major").append($(str));
+	}
+}, "json");
 $(
+		
 	layui.use(['form', 'miniTab'], function () {
         var form = layui.form,
             layer = layui.layer,
@@ -121,7 +140,7 @@ $(
                 title: '最终的提交信息'
             }, function () {
             	var mno =$("#login_usid").val();
-            	$.post("../memberInfo/updateInfo", {nickName:data.field.username, sex:data.field.sex, academic:data.field.choice, province:data.field.province, score:data.field.score, ranking:data.field.number, mno:mno}, function(data) {
+            	$.post("../memberInfo/updateInfo", {nickName:data.field.username, sex:data.field.sex, academic:data.field.choice, province:data.field.province, score:data.field.score, ranking:data.field.number, major:data.field.major, mno:mno}, function(data) {
             		data = parseInt($.trim(data));
             		if (data == 1) { // 修改成功
             			layer.msg('修改个人信息成功');

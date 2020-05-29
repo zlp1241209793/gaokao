@@ -17,7 +17,7 @@ public class WeightInfoBizImpl implements IWeightInfoBiz {
 
 	@Override
 	public int setWeight(WeightInfo weight) {
-		if (StringUtil.checkNull(weight.getMno(), weight.getInterest(), weight.getLocation(), weight.getRanking(), weight.getMajor())) {
+		if (StringUtil.checkNull(weight.getMno(), weight.getLocation(), weight.getRanking(), weight.getMajor())) {
 			return 0;
 		}
 		// 判断该用户是否设置过权重,若是则调用修改的方法
@@ -30,7 +30,7 @@ public class WeightInfoBizImpl implements IWeightInfoBiz {
 
 	@Override
 	public int updateWeight(WeightInfo weight) {
-		if (StringUtil.checkNull(weight.getMno(), weight.getInterest(), weight.getLocation(), weight.getRanking(), weight.getMajor())) {
+		if (StringUtil.checkNull(weight.getMno(), weight.getLocation(), weight.getRanking(), weight.getMajor())) {
 			return 0;
 		}
 		return weightMapper.updateWeight(weight);

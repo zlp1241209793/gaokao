@@ -1,5 +1,8 @@
 package com.ldz.college.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import com.ldz.college.entity.MemberInfo;
 
 public interface IMemberInfoMapper {
@@ -30,4 +33,17 @@ public interface IMemberInfoMapper {
 	 * @return
 	 */
 	public MemberInfo findAll(String mno);
+	
+	/**
+	 * 根据用户邮箱查询用户信息
+	 * @param email
+	 * @return
+	 */
+	public MemberInfo findByEmail(String email);
+	
+	/**
+	 * 查询所有专业
+	 * @return
+	 */
+	public List<Map<String, Object>> findMajor();
 }
