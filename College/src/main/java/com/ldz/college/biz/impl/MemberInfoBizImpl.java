@@ -69,8 +69,18 @@ public class MemberInfoBizImpl implements IMemberInfoBiz {
 	}
 
 	@Override
+	@Transactional
 	public List<Map<String, Object>> findMajor() {
 		return memberInfoMapper.findMajor();
+	}
+
+	@Override
+	@Transactional
+	public int resetPwd(MemberInfo memberInfo) {
+		if (StringUtil.checkNull(memberInfo.getEmail(), memberInfo.getPwd())) {
+			return 0;
+		}
+		return memberInfoMapper.resetPwd(memberInfo);
 	}
 
 }

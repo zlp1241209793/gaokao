@@ -46,4 +46,11 @@ public interface IMemberInfoMapper {
 	 * @return
 	 */
 	public List<Map<String, Object>> findMajor();
+	
+	/**
+	 * 用户重设密码
+	 * @param pwd
+	 * @return
+	 */
+	public int resetPwd(MemberInfo memberInfo);
 }

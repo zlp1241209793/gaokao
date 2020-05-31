@@ -80,7 +80,7 @@
 		<!-- 发件箱 -->
 		<property name="sendEmail" value="1241209793@qq.com"></property>
 		<!-- 发件箱授权码 -->
-		<property name="pwd" value="fvaqvsyleuwkbagg"></property>
+		<property name="pwd" value="cxouvrcitjjmjeji"></property>
 	</bean>
 	
 	<!-- 为排名推荐学校 -->

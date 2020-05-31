@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ldz.college.biz.IUniversityInfoBiz;
 import com.ldz.college.entity.UniversityInfo;
@@ -19,10 +20,12 @@ import com.ldz.college.util.RequestParameterUtil;
 import com.ldz.college.util.StringUtil;
 
 @Service
+@Transactional
 public class UniversityInfoBizImpl implements IUniversityInfoBiz{
 	@Autowired
 	private IUniversityInfoMapper universityInfoMapper;
 	
+	@Transactional
 	@Override
 	public List<UniversityInfo> findByPage(Integer page, Integer rows) {
 		if (StringUtil.checkNull(page, rows)) {
@@ -32,6 +35,7 @@ public class UniversityInfoBizImpl implements IUniversityInfoBiz{
 		return universityInfoMapper.findByPage(map);
 	}
 
+	@Transactional
 	@Override
 	public String getCount() {
 		return universityInfoMapper.getCount();
@@ -49,6 +53,7 @@ public class UniversityInfoBizImpl implements IUniversityInfoBiz{
 		}
 	}
 
+	@Transactional
 	@Override
 	public Map<String, Object> luceneSearch(String text, Integer page, Integer rows) {
 		// 处理page和rows

@@ -15,6 +15,7 @@ public class WeightInfoBizImpl implements IWeightInfoBiz {
 	@Autowired
 	private IWeightInfoMapper weightMapper;
 
+	@Transactional
 	@Override
 	public int setWeight(WeightInfo weight) {
 		if (StringUtil.checkNull(weight.getMno(), weight.getLocation(), weight.getRanking(), weight.getMajor())) {
@@ -28,6 +29,7 @@ public class WeightInfoBizImpl implements IWeightInfoBiz {
 		return weightMapper.setWeight(weight); // 调用设置权重的方法
 	}
 
+	@Transactional
 	@Override
 	public int updateWeight(WeightInfo weight) {
 		if (StringUtil.checkNull(weight.getMno(), weight.getLocation(), weight.getRanking(), weight.getMajor())) {
@@ -36,6 +38,7 @@ public class WeightInfoBizImpl implements IWeightInfoBiz {
 		return weightMapper.updateWeight(weight);
 	}
 
+	@Transactional
 	@Override
 	public WeightInfo findByMno(String mno) {
 		if (StringUtil.checkNull(mno)) {

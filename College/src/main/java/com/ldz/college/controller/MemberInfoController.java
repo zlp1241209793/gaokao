@@ -60,6 +60,45 @@ public class MemberInfoController {
 		
 		return ResponseUtil.responseMap(200, null, object);
 	}
+	
+	@RequestMapping("/resetPwd")
+	@ResponseBody
+	public int resetPwd(HttpSession session, String code, MemberInfo memberInfo) {
+		int result = -1;
+		String emailCode = (String) session.getAttribute("resetPwdEmailCode");
+		if (emailCode.equals(code)) { // 如果验证码正确
+			result = memberInfoBiz.resetPwd(memberInfo);
+		} else { // 验证码错误
+			result = -2;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("/getResetPwdEmailCode")
+	@ResponseBody
+	public int getResetPwdEmailCode(HttpSession session, String email) {
+		int result = -1;
+		if (StringUtil.checkNull(email)) {// 邮箱为空
+			result = 0; 
+		} else { 
+			String emailCode = "";
+			MemberInfo memberInfo = memberInfoBiz.findByEmail(email);
+			if (!StringUtil.checkNull(memberInfo)) { // 说明邮箱已被注册
+				// 生成验证码
+				Random rd = new Random();
+				for (int i = 0; i < 6; i++) {
+					emailCode += rd.nextInt(10);
+				}
+				sendMailUtil.sendHtmlMail(email, memberInfo.getNickName(), emailCode); // 发送邮件
+				session.setAttribute("resetPwdEmailCode", emailCode);
+				result = 1;
+			} else { // 说明该邮箱未注册
+				result = -2;
+			}
+		}
+		return result;
+	}
 
 	@RequestMapping("/getCode")
 	public void getCode(HttpServletResponse response, HttpServletRequest request) {

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>志愿辅助填报-注册</title>
+    <title>志愿辅助填报-登录</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -117,22 +117,7 @@
             <div class="layui-form login-form">
                 <form class="layui-form" action="">
                     <div class="layui-form-item logo-title">
-                        <h1>志愿填报-注册</h1>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-icon layui-icon-username" for="username"></label>
-                        <input type="text" id="username" name="username" lay-verify="required|account" placeholder="用户名"
-                            autocomplete="off" class="layui-input" value="">
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-icon layui-icon-password" for="password"></label>
-                        <input type="password" name="password" lay-verify="required|password" placeholder="密码"
-                            autocomplete="off" class="layui-input" value="">
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-icon layui-icon-password" for="password"></label>
-                        <input type="password" name="repeat_password" lay-verify="required|password" placeholder="确认密码"
-                            autocomplete="off" class="layui-input" value="">
+                        <h1>志愿填报-找回密码</h1>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-icon layui-icon-password" for="password"></label>
@@ -149,13 +134,22 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="register">注
-                            册
+                        <label class="layui-icon layui-icon-password" for="password"></label>
+                        <input type="password" name="password" lay-verify="required|password" placeholder="密码"
+                            autocomplete="off" class="layui-input" value="">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-icon layui-icon-password" for="password"></label>
+                        <input type="password" name="repeat_password" lay-verify="required|password" placeholder="确认密码"
+                            autocomplete="off" class="layui-input" value="">
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="register">修改密码
                         </button>
                     </div>
                     <hr style="width: 100%" />
                     <p style="width: 100%"><a href="login.html" class="fl">已有账号？立即登录</a>
-                        <a href="find.html" style="float: right">忘记密码？</a>
+                        <a href="register.html" style="float: right">注册账号？</a>
                     </p>
                 </form>
 
@@ -181,7 +175,6 @@
                 });
             });
             $('#LAY-user-reg-getsmscode').on('click', function () {
-            	username = $('#username').val();
                 email = $('#email').val();
                 if ($.trim(email) == '' || $.trim(email) == '邮    箱:' || $.trim(email) == null) {
                     layer.msg('邮箱不能为空！');
@@ -189,7 +182,7 @@
                 }
                 var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
                 if (!reg.test(email)) {
-                    layer.msg("邮箱格式不正确");
+                    layer.msg("邮箱格式不对");
                     return false;
                 }
                 var that = $(this)
@@ -206,14 +199,14 @@
                         that.removeAttr('disabled');//移除属性，可点击
                     }
                 }, 1000)
-                $.post("../memberInfo/getEmailCode", {email:email, nickName:username}, function(data){
+                $.post("../memberInfo/getResetPwdEmailCode", {email:email}, function(data){
                 	data = parseInt($.trim(data));
                 	if (data == -1) { // 验证码发送失败
                 		layer.msg("验证码发送失败");
 					} else if (data == 0) { // 邮箱为空
                 		layer.msg("验证码发送失败");
-					} else if (data == -2) { // 该邮箱已被注册
-                		layer.msg("该邮箱已被注册");
+					} else if (data == -2) { // 该邮箱未注册
+                		layer.msg("该邮箱未注册,请先注册");
 					} else if (data == 1) { // 验证码发送成功
                 		layer.msg("验证码发送成功");
 					}
@@ -222,10 +215,6 @@
             // 进行注册操作
             form.on('submit(register)', function (data) {
                 data = data.field;
-                if (data.username == '') {
-                    layer.msg('用户名不能为空');
-                    return false;
-                }
                 if (data.password == '') {
                     layer.msg('密码不能为空');
                     return false;
@@ -242,20 +231,20 @@
                     layer.msg('验证码不能为空');
                     return false;
                 }
-                $.post("../memberInfo/register", {code:data.captcha, nickName:data.username, pwd:data.password, email:data.email}, function(result){
-                	result = parseInt($.trim(result));
-                	if (result == -2) { // 验证码错误
-                		layer.msg('验证码错误');
-					} else if (result == 0) { // 信息不完整
-                		layer.msg('您输入的信息不完整');
-					} else if (result == -1) { // 该账号已被注册
-                		layer.msg('该账号已被注册');
-					} else if (result == 1) { // 注册成功
-						layer.msg('注册成功', function () {
+                $.post("../memberInfo/resetPwd", {code:data.captcha, email:data.email, pwd:data.password}, function(result) {
+					result = parseInt($.trim(result));
+					if (result == -2) { // 验证码错误
+						layer.msg('验证码错误');
+					} else if (result == 0) { // 用户信息不完全
+						layer.msg('重置密码失败,请稍后重试');
+					} else if (result == 1) { // 重置密码成功
+						layer.msg('重置密码成功', function () {
                             window.location = 'login.html';
                         });
+					} else if (result = -1) { // 重置密码失败
+						layer.msg('重置密码失败,请稍后重试');
 					}
-                }, "json");
+				}, "json")
 
                 return false;
             });

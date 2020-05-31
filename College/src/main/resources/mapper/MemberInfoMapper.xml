@@ -29,4 +29,8 @@
 	<select id="findMajor" resultType="map">
 		select big_profess from big_to_small group by big_profess
 	</select>
+	
+	<update id="resetPwd" parameterType="MemberInfo">
+		update memberinfo set pwd=md5(#{pwd}) where email=#{email}
+	</update>
 </mapper>
