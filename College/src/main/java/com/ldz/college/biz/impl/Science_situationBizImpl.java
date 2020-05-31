@@ -24,4 +24,9 @@ public class Science_situationBizImpl implements IScience_situationBiz {
 		return science_situationMapper.majorRank(map);
 	}
 
+	@Override
+	public List<Map<String, Object>> schoolRank(Map<String, Object> map) {
+		return science_situationMapper.schoolRank(map);
+	}
+
 }

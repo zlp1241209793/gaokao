@@ -61,17 +61,20 @@ public class Liberalarts_situationController {
 			// 采用地域优先算法
 			list = liberalarts_situationBiz.locationRank(map); // 查出所有符合地域条件的学校
 			// 所有的省会城市
-			String city = "石家庄市太原市呼和浩特市沈阳市长春市哈尔滨市南京市杭州市合肥市福州市南昌市济南市郑州市武汉市长沙市广州市南宁市海口市成都市贵阳市昆明市拉萨市西安市兰州市西宁市银川市乌鲁木齐市台北市";
+			String city = "北京市天津市上海市重庆市石家庄市太原市呼和浩特市沈阳市长春市哈尔滨市南京市杭州市合肥市福州市南昌市济南市郑州市武汉市长沙市广州市南宁市海口市成都市贵阳市昆明市拉萨市西安市兰州市西宁市银川市乌鲁木齐市台北市";
 			list = dealWithRank.cityRank_Displacement(list, 0.2, city); // 对省会城市的排名做处理 排名+20%
 			
 			list = dealWithRank.reSort_Displacement(list); // 对学校排名重新进行升序排序
-			list = list.subList(0, (int) (list.size() * 0.2)); // 取前20%的学校
+			
+			list = recommendForRank.listDeduplication(list); // 学校去重
+			
+			list = recommendForRank.finalRecommend(list); // 最终推荐的学校列表
 		} else if (weightInfo.getMajor() > weightInfo.getLocation() && weightInfo.getMajor() > weightInfo.getRanking()) { // 如果用户的专业权重最大
 			map.put("major", memberInfo.getMajor()); // 将用户的偏向专业取出来存到map里
 			// 采用专业优先算法
 			list = liberalarts_situationBiz.majorRank(map); // 查出所有符合专业条件的学校
 			// 所有的省会城市
-			String city = "石家庄市太原市呼和浩特市沈阳市长春市哈尔滨市南京市杭州市合肥市福州市南昌市济南市郑州市武汉市长沙市广州市南宁市海口市成都市贵阳市昆明市拉萨市西安市兰州市西宁市银川市乌鲁木齐市台北市";
+			String city = "北京市天津市上海市重庆市石家庄市太原市呼和浩特市沈阳市长春市哈尔滨市南京市杭州市合肥市福州市南昌市济南市郑州市武汉市长沙市广州市南宁市海口市成都市贵阳市昆明市拉萨市西安市兰州市西宁市银川市乌鲁木齐市台北市";
 			list = dealWithRank.cityRank_Major(list, 0.1, city); // 对省会城市的排名做处理 排名+10%
 			// 对特殊的省做处理
 			city = "北京市上海市天津市河北省山西省内蒙古自治区湖北省湖南省河南省江西省广东省广西省海南省四川省";
@@ -80,9 +83,27 @@ public class Liberalarts_situationController {
 			list = dealWithRank.provinceRank_Major(list, 0.05, city); // 东北地区及云贵地区学校排名+（筛选结果总数*5%）
 			
 			list = dealWithRank.reSort_Major(list);// 对学校排名重新进行升序排序
-			list = list.subList(0, (int) (list.size() * 0.2)); // 取前20%的学校
-		} else if (weightInfo.getRanking() > weightInfo.getMajor() && weightInfo.getRanking() > weightInfo.getLocation()) { // 如果用户的学校权重最大
 			
+			list = recommendForRank.listDeduplication(list); // 学校去重
+			
+			list = recommendForRank.finalRecommend(list); // 最终推荐的学校列表
+		} else if (weightInfo.getRanking() > weightInfo.getMajor() && weightInfo.getRanking() > weightInfo.getLocation()) { // 如果用户的学校权重最大
+			// 采用学校优先算法
+			list = liberalarts_situationBiz.schoolRank(map); // 查出所有符合专业条件的学校
+			// 所有的省会城市
+			String city = "北京市天津市上海市重庆市石家庄市太原市呼和浩特市沈阳市长春市哈尔滨市南京市杭州市合肥市福州市南昌市济南市郑州市武汉市长沙市广州市南宁市海口市成都市贵阳市昆明市拉萨市西安市兰州市西宁市银川市乌鲁木齐市台北市";
+			list = dealWithRank.cityRank_Displacement(list, 0.1, city); // 省会城市学校排名+（筛选结果总数*10%）
+			// 对特殊的省做处理
+			city = "北京市上海市天津市河北省山西省内蒙古自治区湖北省湖南省河南省江西省广东省广西省海南省四川省";
+			list = dealWithRank.provinceRank_Displacement(list, 0.1, city); // 北京、上海地区、华北、华中、华南、四川地区学校排名+（筛选结果总数*10%） 排名+10%
+			city = "辽宁省吉林省黑龙江省贵州省云南省";
+			list = dealWithRank.provinceRank_Displacement(list, 0.05, city); // 东北地区及云贵地区学校排名+（筛选结果总数*5%）
+			
+			list = dealWithRank.reSort_Displacement(list);// 对学校排名重新进行升序排序
+			
+			list = recommendForRank.listDeduplication(list); // 学校去重
+			
+			list = recommendForRank.finalRecommend(list); // 最终推荐的学校列表
 		}
 		return list;
 	}

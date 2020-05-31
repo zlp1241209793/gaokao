@@ -23,4 +23,9 @@ public class Liberalarts_situationBizImpl implements ILiberalarts_situationBiz {
 	public List<Map<String, Object>> majorRank(Map<String, Object> map) {
 		return liberalarts_situationMapper.majorRank(map);
 	}
+
+	@Override
+	public List<Map<String, Object>> schoolRank(Map<String, Object> map) {
+		return liberalarts_situationMapper.schoolRank(map);
+	}
 }

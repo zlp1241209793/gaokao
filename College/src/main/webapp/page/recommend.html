@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页三</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <style>
+        .top-panel {
+            border: 1px solid #eceff9;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .top-panel > .layui-card-body {
+            height: 60px;
+        }
+
+        .top-panel-number {
+            line-height: 60px;
+            font-size: 30px;
+            border-right: 1px solid #eceff9;
+        }
+
+        .top-panel-tips {
+            line-height: 30px;
+            font-size: 12px
+        }
+    </style>
+</head>
+<body>
+<!--<div class="layuimini-container">-->
+<div class="layuimini-main">
+
+    <div class="layui-row layui-col-space15">
+
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-md12">
+            <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+        </div>
+    </div>
+
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-md12">
+            <div id="echarts-dataset" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
+        </div>
+    </div>
+
+<input type="hidden" id="loginInfo"/>
+<input type="hidden" id="login_usid"/>
+<input type="hidden" id="login_academic"/>
+</div>
+<!--</div>-->
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js" charset="utf-8"></script>
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../js/myjs/checkLogin.js" charset="utf-8"></script>
+<script>
+var check = checkLogin;
+$(
+    layui.use(['layer', 'echarts'], function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                echarts = layui.echarts;
+            var school_name = new Array();
+            var score = new Array();
+            var displacement = new Array();
+            var throw_num = new Array();
+            var plan_num = new Array();
+            var source_json = new Array();
+
+            check(function recommendForRank() {
+    			var mno = $("#login_usid").val();
+    			var academic = $("#login_academic").val();
+    			if (academic == "science") { // 如果用户是理科
+					$.post("../science/recommendForRank", {mno:mno}, function(data) {
+						if (data != null) {
+							$.each(data, function (index, school) {
+								school_name[index] = school.school_name;
+								score[index] = school.score;
+								displacement[index] = school.displacement;
+								throw_num[index] = school.throw_num;
+								plan_num[index] = school.plan_num;
+								source_json[index] = {
+								    product: school.school_name,
+								    '分数': school.score,
+								    '排名': school.displacement,
+								    '投档人数': school.throw_num,
+								    '计划人数': school.plan_num
+								}
+							});
+							createEcharts();
+						}
+					}, "json");
+    			} else if (academic == "poem") { // 如果用户是文科
+					$.post("../liberalarts/recommendForRank", {mno:mno}, function(data) {
+						if (data != null) {
+							$.each(data, function (index, school) {
+								console.log(school.plan_num);
+								school_name[index] = school.school_name;
+								score[index] = school.score;
+								displacement[index] = school.displacement;
+								throw_num[index] = school.throw_num;
+								plan_num[index] = school.plan_num;
+								source_json[index] = {
+								    product: school.school_name,
+								    '分数': school.score,
+								    '排名': school.displacement,
+								    '投档人数': school.throw_num,
+								    '计划人数': school.plan_num
+								}
+							});
+						createEcharts();
+						}
+					}, "json");
+    			}
+    			
+				function createEcharts() {
+					/**
+					 * 报表功能
+					 */
+					var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
+					
+					var optionRecords = {
+					    title: {
+					        text: '参考数据'
+					    },
+					    tooltip: {
+					        trigger: 'axis',
+					        axisPointer: {
+					            type: 'cross',
+					            label: {
+					                backgroundColor: '#6a7985'
+					            }
+					        }
+					    },
+					    legend: {
+					        data: ['分数', '排名', '投档人数', '计划人数']
+					    },
+					    toolbox: {
+					        feature: {
+					            saveAsImage: {}
+					        }
+					    },
+					    grid: {
+					        left: '3%',
+					        right: '4%',
+					        bottom: '3%',
+					        containLabel: true
+					    },
+					    xAxis: [
+					        {
+					            type: 'category',
+					            boundaryGap: false,
+					            axisLabel: {interval: 0, rotate: 15},
+					            data: school_name
+					        }
+					    ],
+					    yAxis: [
+					        {
+					            type: 'value'
+					        }
+					    ],
+					    series: [
+					        {
+					            name: '分数',
+					            type: 'line',
+					            stack: '总量',
+					            areaStyle: {},
+					            data: score
+					        },
+					        {
+					            name: '排名',
+					            type: 'line',
+					            areaStyle: {},
+					            data: displacement
+					        },
+					        {
+					            name: '投档人数',
+					            type: 'line',
+					            stack: '总量',
+					            areaStyle: {},
+					            data: throw_num
+					        },
+					        {
+					            name: '计划人数',
+					            type: 'line',
+					            stack: '总量',
+					            areaStyle: {},
+					            data: plan_num
+					        }
+					    ]
+					};
+					echartsRecords.setOption(optionRecords, false);
+					//echartsRecords.resize();
+					
+					/**
+					 * 柱状图
+					 */
+					/**
+					 * 柱状图
+					 */
+					var echartsDataset = echarts.init(document.getElementById('echarts-dataset'), 'walden');
+					
+					var optionDataset = {
+					    legend: {},
+					    tooltip: {},
+					    dataset: {
+					
+					        dimensions: ['product', '分数', '排名', '投档人数', '计划人数'],
+					        source: source_json
+					    },
+					    xAxis: {
+					        type: 'category',
+					        axisLabel: {interval: 0, fontSize: 10, rotate: 15}
+					    },
+					    yAxis: {},
+					    // Declare several bar series, each will be mapped
+					    // to a column of dataset.source by default.
+					    series: [
+					        {type: 'bar'},
+					        {type: 'bar'},
+					        {type: 'bar'},
+					        {type: 'bar'}
+					    ]
+					};
+					
+					echartsDataset.setOption(optionDataset);
+				}    			
+    		})
+        }
+    )
+)
+</script>
+</body>
+</html>

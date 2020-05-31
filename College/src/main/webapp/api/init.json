@@ -23,7 +23,7 @@
         },
         {
           "title": "志愿推荐",
-          "href": "page/welcome-2.html",
+          "href": "page/recommend.html",
           "icon": "fa fa-gears",
           "target": "_self"
         },

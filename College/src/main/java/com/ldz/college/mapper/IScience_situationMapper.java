@@ -17,4 +17,11 @@ public interface IScience_situationMapper {
 	 * @return
 	 */
 	public List<Map<String, Object>> majorRank(Map<String, Object> map);
+	
+	/**
+	 * 学校优先算法
+	 * @param map
+	 * @return
+	 */
+	public List<Map<String, Object>> schoolRank(Map<String, Object> map);
 }

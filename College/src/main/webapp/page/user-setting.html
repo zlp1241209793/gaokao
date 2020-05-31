@@ -33,14 +33,6 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label required">倾向专业</label>
-                <div class="layui-input-inline" style="width: 200px;">
-                    <select id="major" name="major" class="province-selector" data-value="" lay-filter="getMajor">
-                        <option value="">请选择专业</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
                 <label class="layui-form-label required">性别</label>
                 <input type="radio" name="sex" value="man" title="男"  />
                 <input type="radio" name="sex" value="woman" title="女"  />
@@ -49,6 +41,14 @@
                 <label class="layui-form-label required">文/理科</label>
                 <input type="radio" name="choice" value="science" title="理科"  />
                 <input type="radio" name="choice" value="poem" title="文科"  />
+            </div>
+            <div class="layui-form-item layui-form-text" id="profess-picker">
+                <label class="layui-form-label required">偏向专业</label>
+                <div class="layui-input-inline" style="width: 200px;">
+                    <select name="profess" class="profess-selector" lay-verify="" id="profess">
+                       
+                    </select>
+                </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">分数</label>
@@ -81,50 +81,59 @@
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
 var check = checkLogin;
-$.post("../memberInfo/findMajor", null, function(data){
-	if (data != null) {
-		var str = '';
-		$.each(data, function(index, item){
-			str += '<option value="">' + item.big_profess + '</option>';
-		})
-		
-		$("#major").append($(str));
-	}
-}, "json");
+
 $(
 		
 	layui.use(['form', 'miniTab'], function () {
         var form = layui.form,
             layer = layui.layer,
             miniTab = layui.miniTab;
-		check(function findAll() {
-			var mno = $("#login_usid").val();
-			$.post("../memberInfo/findAll", {mno:mno}, function(data){
-				if (data != null) {
-					$("#username").val(data.nickName);
-					layui.use(['layarea'], function () {
-	                    var layarea = layui.layarea;
-	                    layarea.render({
-	                        elem: '#area-picker',
-	                        data: {
-	                            province: data.province
-	                        },
-	                        change: function (res) {
-	                            //选择结果
-	                            console.log(res);
-	                        }
-	                    });
-	                });
-	                $("input[name=sex][value='man']").attr("checked", data.sex === 'man');
-	                $("input[name=sex][value='woman']").attr("checked", data.sex === 'woman');
-	                $("input[name=choice][value='science']").attr("checked", data.academic === 'science');
-	                $("input[name=choice][value='poem']").attr("checked", data.academic === 'poem');
-					$("#score").val(data.score);
-					$("#number").val(data.ranking);
-					form.render();
-				}
-			}, "json");
-		}) // checkLogin执行完后执行这个方法
+        
+        $.post("../memberInfo/findMajor", null, function(data){
+        	if (data != null) {
+        		$('#profess').html("");
+                $('#profess').append($("<option value=''>选择专业</option>"));
+                var str = '';
+        		$.each(data, function(index, item){
+        			str += '<option value="' + item.big_profess + '">' + item.big_profess + '</option>';
+        		})
+        		
+        		$("#profess").append($(str));
+        		form.render();
+        	}
+        	
+			check(function findAll() {
+				var mno = $("#login_usid").val();
+				$.post("../memberInfo/findAll", {mno:mno}, function(data){
+					if (data != null) {
+						$("#username").val(data.nickName);
+						layui.use(['layarea'], function () {
+		                    var layarea = layui.layarea;
+		                    layarea.render({
+		                        elem: '#area-picker',
+		                        data: {
+		                            province: data.province
+		                        },
+		                        change: function (res) {
+		                            //选择结果
+		                            console.log(res);
+		                        }
+		                    });
+		                });
+		                $("input[name=sex][value='man']").attr("checked", data.sex === 'man');
+		                $("input[name=sex][value='woman']").attr("checked", data.sex === 'woman');
+		                $("input[name=choice][value='science']").attr("checked", data.academic === 'science');
+		                $("input[name=choice][value='poem']").attr("checked", data.academic === 'poem');
+		                var str = "<option value='" + data.major + "'>" + data.major + "</option>";
+		                str += $("#profess").html();
+		                $("#profess").html("").append($(str));
+						$("#score").val(data.score);
+						$("#number").val(data.ranking);
+						form.render();
+					}
+				}, "json");
+			}) // checkLogin执行完后执行这个方法
+        }, "json");
 	})
 )
 </script>
@@ -140,7 +149,7 @@ $(
                 title: '最终的提交信息'
             }, function () {
             	var mno =$("#login_usid").val();
-            	$.post("../memberInfo/updateInfo", {nickName:data.field.username, sex:data.field.sex, academic:data.field.choice, province:data.field.province, score:data.field.score, ranking:data.field.number, major:data.field.major, mno:mno}, function(data) {
+            	$.post("../memberInfo/updateInfo", {nickName:data.field.username, sex:data.field.sex, academic:data.field.choice, province:data.field.province, score:data.field.score, ranking:data.field.number, major:data.field.profess, mno:mno}, function(data) {
             		data = parseInt($.trim(data));
             		if (data == 1) { // 修改成功
             			layer.msg('修改个人信息成功');

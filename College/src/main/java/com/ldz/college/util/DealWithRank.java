@@ -24,7 +24,7 @@ public class DealWithRank {
 		for (Map<String, Object> map : list) {
 			// 判断该城市是否为字符串中的城市
 			if (text.contains(map.get("city").toString())) { // 若是，省会城市学校排名+（筛选结果总数*percent%）
-				map.put("displacement", (int) map.get("displacement") - (int) (list.size() * percent));
+				map.put("displacement", (int) (Double.parseDouble(map.get("displacement").toString()) - (list.size() * percent)));
 			}
 		}
 		return list;
@@ -43,7 +43,7 @@ public class DealWithRank {
 		for (Map<String, Object> map : list) {
 			// 判断该省是否字符串中的省
 			if (text.contains(map.get("province").toString())) { // 若是，省会城市学校排名+（筛选结果总数*percent%）
-				map.put("displacement", (int) map.get("displacement") - (int) (list.size() * percent));
+				map.put("displacement", (int) (Double.parseDouble(map.get("displacement").toString()) - (list.size() * percent)));
 			}
 		}
 		return list;
@@ -83,7 +83,7 @@ public class DealWithRank {
 		for (Map<String, Object> map : list) {
 			// 判断该城市是否为字符串中的城市
 			if (text.contains(map.get("city").toString())) { // 若是，省会城市学校排名+（筛选结果总数*percent%）
-				map.put("rank", (int) map.get("rank") - (int) (list.size() * percent));
+				map.put("rank", (int) (Double.parseDouble(map.get("rank").toString()) - (list.size() * percent)));
 			}
 		}
 		return list;
@@ -102,7 +102,7 @@ public class DealWithRank {
 		for (Map<String, Object> map : list) {
 			// 判断该省是否字符串中的省
 			if (text.contains(map.get("province").toString())) { // 若是，省会城市学校排名+（筛选结果总数*percent%）
-				map.put("rank", (int) map.get("rank") - (int) (list.size() * percent));
+				map.put("rank", (int) (Double.parseDouble(map.get("rank").toString()) - (list.size() * percent)));
 			}
 		}
 		return list;
