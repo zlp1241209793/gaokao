@@ -117,6 +117,7 @@ public class DealWithRank {
 		if (list.size() <= 0) { // 如果集合中没有数据
 			return Collections.EMPTY_LIST;
 		}
+		
 		Collections.sort(list, new Comparator<Map<String, Object>>(){
 			@Override
 			public int compare(Map<String, Object> o1, Map<String, Object> o2) {

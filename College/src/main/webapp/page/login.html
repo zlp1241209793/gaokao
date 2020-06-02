@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -199,7 +200,9 @@
             
             $.post("../memberInfo/login", {nickName:data.username, pwd:data.password, yzm:data.captcha}, function(result){
             	result = parseInt($.trim(result));
-            	if (result == -2) {
+            	if (result == 0) {
+            		layer.msg('您的信息不完整');
+            	} else if (result == -2) {
             		layer.msg('验证码不正确');
             	} else if (result == -1) {
             		layer.msg('密码错误');

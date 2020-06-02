@@ -33,4 +33,18 @@ public class Science_situationBizImpl implements IScience_situationBiz {
 		return science_situationMapper.schoolRank(map);
 	}
 
+	@Override
+	public List<Map<String, Object>> locationRankExtensionSchool(Map<String, Object> map) {
+		return science_situationMapper.locationRankExtensionSchool(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> majorRankExtensionSchool(Map<String, Object> map) {
+		return science_situationMapper.majorRankExtensionSchool(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> schoolRankExtensionSchool(Map<String, Object> map) {
+		return science_situationMapper.schoolRankExtensionSchool(map);
+	}
 }

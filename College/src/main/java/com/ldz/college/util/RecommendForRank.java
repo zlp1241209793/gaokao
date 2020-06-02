@@ -22,8 +22,8 @@ public class RecommendForRank {
 		Integer minRank = 0; // 排名向下浮动后的值
 
 		if (rank <= 100) { // 如果用户的排名在100及以内,直接推荐前10的学校
-			minRank = 0;
-			maxRank = 10;
+			minRank = 66;
+			maxRank = 2000;
 		} else if (rank > 100 && rank <= 1000) { 
 			//101~1000    取参考排名区间±15%的院校。
 			//激进方案：参考排名=实际排名*85%
@@ -64,6 +64,7 @@ public class RecommendForRank {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("minRank", minRank);
 		map.put("maxRank", maxRank);
+		map.put("rank", rank);
 		
 		return map;
 	}

@@ -64,9 +64,16 @@ public class Liberalarts_situationController {
 			String city = "北京市天津市上海市重庆市石家庄市太原市呼和浩特市沈阳市长春市哈尔滨市南京市杭州市合肥市福州市南昌市济南市郑州市武汉市长沙市广州市南宁市海口市成都市贵阳市昆明市拉萨市西安市兰州市西宁市银川市乌鲁木齐市台北市";
 			list = dealWithRank.cityRank_Displacement(list, 0.2, city); // 对省会城市的排名做处理 排名+20%
 			
-			list = dealWithRank.reSort_Displacement(list); // 对学校排名重新进行升序排序
-			
 			list = recommendForRank.listDeduplication(list); // 学校去重
+			
+			if (list.size() <= 0) { // 如果list为空
+				list = liberalarts_situationBiz.locationRankExtensionSchool(map); // 以地域为权重查询用户排名相邻的前20所和后20所学校
+				list = recommendForRank.listDeduplication(list); // 学校去重
+			} else if (list.size() < 10) { // 如果推荐结果不够10所学校，则进行扩展
+				list.addAll(liberalarts_situationBiz.locationRankExtensionSchool(map)); // 以地域为权重查询用户排名相邻的前20所和后20所学校
+				list = recommendForRank.listDeduplication(list); // 学校去重
+			}
+			list = dealWithRank.reSort_Displacement(list); // 对学校排名重新进行升序排序
 			
 			list = recommendForRank.finalRecommend(list); // 最终推荐的学校列表
 		} else if (weightInfo.getMajor() > weightInfo.getLocation() && weightInfo.getMajor() > weightInfo.getRanking()) { // 如果用户的专业权重最大
@@ -82,9 +89,16 @@ public class Liberalarts_situationController {
 			city = "辽宁省吉林省黑龙江省贵州省云南省";
 			list = dealWithRank.provinceRank_Major(list, 0.05, city); // 东北地区及云贵地区学校排名+（筛选结果总数*5%）
 			
-			list = dealWithRank.reSort_Major(list);// 对学校排名重新进行升序排序
-			
 			list = recommendForRank.listDeduplication(list); // 学校去重
+			
+			if (list.size() <= 0) { // 如果list为空
+				list = liberalarts_situationBiz.majorRankExtensionSchool(map); // 以专业为权重查询用户排名相邻的前20所和后20所学校
+				list = recommendForRank.listDeduplication(list); // 学校去重
+			} else if (list.size() < 10) { // 如果推荐结果不够10所学校，则进行扩展
+				list.addAll(liberalarts_situationBiz.majorRankExtensionSchool(map)); // 以专业为权重查询用户排名相邻的前20所和后20所学校
+				list = recommendForRank.listDeduplication(list); // 学校去重
+			}
+			list = dealWithRank.reSort_Major(list);// 对学校排名重新进行升序排序
 			
 			list = recommendForRank.finalRecommend(list); // 最终推荐的学校列表
 		} else if (weightInfo.getRanking() > weightInfo.getMajor() && weightInfo.getRanking() > weightInfo.getLocation()) { // 如果用户的学校权重最大
@@ -99,9 +113,16 @@ public class Liberalarts_situationController {
 			city = "辽宁省吉林省黑龙江省贵州省云南省";
 			list = dealWithRank.provinceRank_Displacement(list, 0.05, city); // 东北地区及云贵地区学校排名+（筛选结果总数*5%）
 			
-			list = dealWithRank.reSort_Displacement(list);// 对学校排名重新进行升序排序
-			
 			list = recommendForRank.listDeduplication(list); // 学校去重
+			
+			if (list.size() <= 0) { // 如果list为空
+				list = liberalarts_situationBiz.schoolRankExtensionSchool(map); // 以学校为权重查询用户排名相邻的前20所和后20所学校
+				list = recommendForRank.listDeduplication(list); // 学校去重
+			} else if (list.size() < 10) { // 如果推荐结果不够10所学校，则进行扩展
+				list.addAll(liberalarts_situationBiz.schoolRankExtensionSchool(map)); // 以学校为权重查询用户排名相邻的前20所和后20所学校
+				list = recommendForRank.listDeduplication(list); // 学校去重
+			} 
+			list = dealWithRank.reSort_Displacement(list);// 对学校排名重新进行升序排序
 			
 			list = recommendForRank.finalRecommend(list); // 最终推荐的学校列表
 		}

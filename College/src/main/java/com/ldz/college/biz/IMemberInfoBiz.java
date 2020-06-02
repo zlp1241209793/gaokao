@@ -53,5 +53,12 @@ public interface IMemberInfoBiz {
 	 * @param pwd
 	 * @return
 	 */
-	public int resetPwd(MemberInfo memberInfo);
+	public int resetPwdByEmail(MemberInfo memberInfo);
+	
+	/**
+	 * 通过用户编号查询用户部分信息
+	 * @param mno
+	 * @return
+	 */
+	public MemberInfo find(MemberInfo memberInfo);
 }

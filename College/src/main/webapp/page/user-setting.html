@@ -145,23 +145,18 @@ $(
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
-            	var mno =$("#login_usid").val();
-            	$.post("../memberInfo/updateInfo", {nickName:data.field.username, sex:data.field.sex, academic:data.field.choice, province:data.field.province, score:data.field.score, ranking:data.field.number, major:data.field.profess, mno:mno}, function(data) {
-            		data = parseInt($.trim(data));
-            		if (data == 1) { // 修改成功
-            			layer.msg('修改个人信息成功');
-					} else {
-            			layer.msg('修改个人信息失败');
-					}
-            	}, "json");
-            	setTimeout(() => {
-	                layer.close(index);
-	                miniTab.deleteCurrentByIframe();
-				}, 1000);
-            });
+        	var mno =$("#login_usid").val();
+        	$.post("../memberInfo/updateInfo", {nickName:data.field.username, sex:data.field.sex, academic:data.field.choice, province:data.field.province, score:data.field.score, ranking:data.field.number, major:data.field.profess, mno:mno}, function(data) {
+        		data = parseInt($.trim(data));
+        		if (data == 1) { // 修改成功
+        			layer.msg('修改个人信息成功');
+				} else {
+        			layer.msg('修改个人信息失败');
+				}
+        	}, "json");
+        	setTimeout(() => {
+                miniTab.deleteCurrentByIframe();
+			}, 1000);
             return false;
         });
 

@@ -30,7 +30,11 @@
 		select big_profess from big_to_small group by big_profess
 	</select>
 	
-	<update id="resetPwd" parameterType="MemberInfo">
+	<update id="resetPwdByEmail" parameterType="MemberInfo">
 		update memberinfo set pwd=md5(#{pwd}) where email=#{email}
 	</update>
+	
+	<select id="find" parameterType="MemberInfo" resultType="MemberInfo">
+		select mno, email from memberinfo where mno=#{mno} and pwd=md5(#{pwd})
+	</select>
 </mapper>

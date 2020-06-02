@@ -10,7 +10,7 @@
 		where displacement &gt;= (select max(displacement) from science_grade where displacement &lt;= #{minRank}) and 
 		displacement &lt;= (select min(displacement) from science_grade where displacement &gt;= #{maxRank})) g 
 		where l.displacement &lt;= g.max and l.displacement &gt;= g.min
-		and province = #{location} order by displacement desc 
+		and province = #{location} order by displacement asc 
 	</select>
 
 	<select id="majorRank" parameterType="map" resultType="map">
@@ -20,13 +20,33 @@
 		displacement &lt;= (select min(displacement) from science_grade where displacement &gt;= #{maxRank})) g 
 		where l.displacement &lt;= g.max and l.displacement &gt;= g.min order by l.displacement desc) l,
 		 profess_school_sort p, (select small_profess from big_to_small where big_profess = #{major}) m
-		where l.school_name = p.school_name and p.profess_name=m.small_profess order by p.rank desc
+		where l.school_name = p.school_name and p.profess_name=m.small_profess order by p.rank asc
 	</select>
 	
 	<select id="schoolRank" parameterType="map" resultType="map">
 		select * from science_situation l, (select min(displacement) min, max(displacement) max from science_grade 
 		where displacement &gt;= (select max(displacement) from science_grade where displacement &lt;= #{minRank}) and 
 		displacement &lt;= (select min(displacement) from science_grade where displacement &gt;= #{maxRank})) g 
-		where l.displacement &lt;= g.max and l.displacement &gt;= g.min order by l.displacement desc 
+		where l.displacement &lt;= g.max and l.displacement &gt;= g.min order by l.displacement asc 
+	</select>
+	
+	<select id="locationRankExtensionSchool" parameterType="map" resultType="map">
+		(select * from science_situation where displacement &lt;= #{rank} and province = #{location} order by displacement desc limit 0,40)
+		union all 
+		(select * from science_situation where displacement &gt;= #{rank} and province = #{location} order by displacement asc limit 0,40);
+	</select>
+	
+	<select id="majorRankExtensionSchool" parameterType="map" resultType="map">
+		(select * from science_situation l, profess_school_sort p, (select small_profess from big_to_small where big_profess = #{major}) m
+		where l.school_name = p.school_name and p.profess_name=m.small_profess and displacement &lt;= #{rank} order by displacement desc limit 0,40)
+		union all 
+		(select * from science_situation  l, profess_school_sort p, (select small_profess from big_to_small where big_profess = #{major}) m
+		where l.school_name = p.school_name and p.profess_name=m.small_profess and displacement &gt;= #{rank} order by displacement asc limit 0,40);
+	</select>
+	
+	<select id="schoolRankExtensionSchool" parameterType="map" resultType="map">
+		(select * from science_situation where displacement &lt;= #{rank} order by displacement desc limit 0,40)
+		union all 
+		(select * from science_situation where displacement &gt;= #{rank} order by displacement asc limit 0,40);
 	</select>
 </mapper>

@@ -33,4 +33,19 @@ public class Liberalarts_situationBizImpl implements ILiberalarts_situationBiz {
 	public List<Map<String, Object>> schoolRank(Map<String, Object> map) {
 		return liberalarts_situationMapper.schoolRank(map);
 	}
+
+	@Override
+	public List<Map<String, Object>> locationRankExtensionSchool(Map<String, Object> map) {
+		return liberalarts_situationMapper.locationRankExtensionSchool(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> majorRankExtensionSchool(Map<String, Object> map) {
+		return liberalarts_situationMapper.majorRankExtensionSchool(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> schoolRankExtensionSchool(Map<String, Object> map) {
+		return liberalarts_situationMapper.schoolRankExtensionSchool(map);
+	}
 }

@@ -101,10 +101,10 @@
                     <hr>
                     <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
                         <h3>说明</h3><br>
-                        <h4>入款到保险箱</h4>
-                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>
-                        <br><h4>入款到现金</h4>
-                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>
+                        <h4>权重修改</h4>
+                        <p>这里的比例一定得有一个偏向较大的</p>
+                        <br><h4>填写权重</h4>
+                        <p>例如60 30 10</p>
                     </div>
                 </div>
             </div>
@@ -115,14 +115,13 @@
 <input id="login_usid" type="hidden" />
 <script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../js/lay-config.js" charset="utf-8"></script>
 <script src="../js/myjs/checkLogin.js" charset="utf-8"></script>
 <script>
 var check = checkLogin;
 $(
 	check(function find() {
 		var mno = $("#login_usid").val();
-		console.log(mno);
 		$.post("../weight/find", {mno:mno}, function(data){
 			if (data != null) {
 				$("#step1_2").val(data.ranking); // 排名
@@ -160,9 +159,9 @@ function viewWeight() {
             stepWidth: '750px',
             height: '500px',
             stepItems: [{
-                title: '填写入款信息'
+            	title: '填写权重比例'
             }, {
-                title: '确认入款信息'
+                title: '确认权重比例'
             }, {
                 title: '完成'
             }]

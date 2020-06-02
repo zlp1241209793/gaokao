@@ -76,11 +76,19 @@ public class MemberInfoBizImpl implements IMemberInfoBiz {
 
 	@Override
 	@Transactional
-	public int resetPwd(MemberInfo memberInfo) {
+	public int resetPwdByEmail(MemberInfo memberInfo) {
 		if (StringUtil.checkNull(memberInfo.getEmail(), memberInfo.getPwd())) {
 			return 0;
 		}
-		return memberInfoMapper.resetPwd(memberInfo);
+		return memberInfoMapper.resetPwdByEmail(memberInfo);
+	}
+
+	@Override
+	public MemberInfo find(MemberInfo memberInfo) {
+		if (StringUtil.checkNull(memberInfo.getMno(), memberInfo.getPwd())) {
+			return null;
+		}
+		return memberInfoMapper.find(memberInfo);
 	}
 
 }

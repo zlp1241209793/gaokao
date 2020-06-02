@@ -36,9 +36,12 @@ public class MemberInfoController {
 	@RequestMapping("/login")
 	@ResponseBody
 	public int login(HttpSession session, MemberInfo mInfo, String yzm) {
+		if (StringUtil.checkNull(yzm)) { // 如果验证码为空
+			return 0;
+		}
 		
 		int result = -1;
-		if (!session.getAttribute("code").toString().equalsIgnoreCase(yzm)) { // 验证码不正确
+		if (!yzm.equalsIgnoreCase(session.getAttribute("code").toString())) { // 验证码不正确
 			result =  -2;
 		} else {
 			MemberInfo memberInfo = memberInfoBiz.login(mInfo);
@@ -61,13 +64,13 @@ public class MemberInfoController {
 		return ResponseUtil.responseMap(200, null, object);
 	}
 	
-	@RequestMapping("/resetPwd")
+	@RequestMapping("/resetPwdByEmail")
 	@ResponseBody
-	public int resetPwd(HttpSession session, String code, MemberInfo memberInfo) {
+	public int resetPwdByEmail(HttpSession session, String code, MemberInfo memberInfo) {
 		int result = -1;
 		String emailCode = (String) session.getAttribute("resetPwdEmailCode");
 		if (emailCode.equals(code)) { // 如果验证码正确
-			result = memberInfoBiz.resetPwd(memberInfo);
+			result = memberInfoBiz.resetPwdByEmail(memberInfo);
 		} else { // 验证码错误
 			result = -2;
 		}
@@ -194,5 +197,28 @@ public class MemberInfoController {
 	@RequestMapping("/findMajor")
 	public List<Map<String, Object>> findMajor() {
 		return memberInfoBiz.findMajor();
+	}
+	
+	@ResponseBody
+	@RequestMapping("/resetPwd")
+	public int resetPwd(String oldPwd, String newPwd, String mno) {
+		int result = -1;
+		if (StringUtil.checkNull(oldPwd, newPwd, mno)) {
+			result = 0;
+		}
+		
+		MemberInfo memberInfo = new MemberInfo();
+		memberInfo.setMno(Integer.parseInt(mno));
+		memberInfo.setPwd(oldPwd);
+		memberInfo = memberInfoBiz.find(memberInfo); // 查出用户的编号，密码，邮箱
+		
+		if (memberInfo != null) { // 如果旧密码正确
+			memberInfo.setPwd(newPwd);
+			result = memberInfoBiz.resetPwdByEmail(memberInfo); // 重置密码
+		} else {
+			result = -2; // 旧密码不正确
+		}
+		
+		return result;
 	}
 }

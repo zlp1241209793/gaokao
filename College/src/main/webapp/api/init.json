@@ -1,7 +1,7 @@
 {
   "homeInfo": {
     "title": "首页",
-    "href": "page/welcome-3.html?t=1"
+    "href": "page/main_page.html?t=1"
   },
   "logoInfo": {
     "title": "上帝之杖",
@@ -17,7 +17,7 @@
       "child": [
         {
           "title": "主页",
-          "href": "page/welcome-3.html",
+          "href": "page/main_page.html",
           "icon": "fa fa-home",
           "target": "_self"
         },
